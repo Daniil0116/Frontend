@@ -5,6 +5,7 @@ type TextObjectProps = {
     textObject: TextObjectType,
     scale?: number,
     isSelected: boolean,
+    //onDragEnd: (newPosition: {x: number: y: number}) => void
 }
 function TextObject({textObject, scale = 1, isSelected}: TextObjectProps) {
     const textObjectStyles: CSSProperties = {

@@ -1,0 +1,15 @@
+/* ColorPicker.module.css */
+.colorPickerContainer {
+    display: flex;
+    align-items: center;
+}
+
+.colorPicker__input[type="color"] {
+    width: 58px; 
+    height: 45px; 
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+}

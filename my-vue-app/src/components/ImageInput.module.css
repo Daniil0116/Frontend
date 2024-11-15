@@ -1,0 +1,22 @@
+.imagePickerContainer {
+    display: flex;
+    align-items: center;
+}
+
+.imagePicker__input {
+    display: none; 
+}
+
+.customButton {
+    padding: 10px 15px;
+    background-color: GhostWhite; 
+    color: black; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-right: 10px;
+}
+
+.customButton:hover {
+    background-color: Gainsboro; 
+}

@@ -1,0 +1,28 @@
+.topPanel {
+    width: 98vw;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    border-bottom: 2px solid Silver;
+}
+
+.topPanel_input {
+    border: none;
+    margin-bottom: 30px;
+    max-height: 20px;
+    max-width: 200px;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+    border-radius: 3px;
+}
+
+.topPanel_buttons {
+    display: flex; 
+    align-items: center; 
+}
+
+
+

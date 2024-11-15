@@ -1,0 +1,22 @@
+.slideList {
+    border-right: 2px solid Silver;
+}
+
+.item {
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.emptySlideList {
+    border-right: 2px dashed Silver; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+    padding: 10px;
+}
+
+.emptyMessage {
+    text-align: center;
+    color: rgb(170, 170, 170);
+}

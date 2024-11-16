@@ -81,7 +81,7 @@ function SlidesList({ slides, selection }: SlidesListProps) {
                             scale={SLIDE_PREVIEW_SCALE}
                             isSelected={slide.id === selection?.selectedSlideId}
                             className={styles.item}
-                            selectedObjId={""}
+                            selectedObjId={selection?.selectedObjectId || null} // Передаем выбранный объект
                         />
                     </div>
                 ))

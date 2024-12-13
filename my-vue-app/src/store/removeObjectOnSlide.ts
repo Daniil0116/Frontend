@@ -6,7 +6,7 @@ function removeObjectOnSlide(editor: EditorType): EditorType {
     const selectedSlideId = editor.selection.selectedSlideId;
     const removeObjectId = editor.selection.selectedObjectId;
 
-    let newSelectedObjectId = null;
+    const newSelectedObjectId = null;
 
 
     const slideIndex = editor.presentation.slides.findIndex(slide => slide.id === selectedSlideId);

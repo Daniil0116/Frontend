@@ -4,7 +4,8 @@ import styles from './SlidesList.module.css';
 import { SelectionType } from "../store/EditorType.ts";
 import { dispatch } from "../store/editor.ts";
 import { setSelection } from "../store/setSelection.ts";
-import { useState, useEffect } from "react";
+import {useDragAndDropForSlide} from "../hooks/"
+import { useDragAndDropSlide } from '../hooks/useDragAndDropForObject.ts';
 
 const SLIDE_PREVIEW_SCALE = 0.2;
 
@@ -72,8 +73,8 @@ function SlidesList({ slides, selection }: SlidesListProps) {
                         draggable
                         onDragStart={(e) => onDragStart(e, slide.id)}
                         onDragOver={onDragOver}
-                        onDrop={(e) => onDrop(e, slide.id)} // Передаем ID текущего слайда как целевой
-                        data-slide-id={slide.id} // Добавляем data-атрибут для получения ID слайда при сбросе
+                        onDrop={(e) => onDrop(e, slide.id)} 
+                        data-slide-id={slide.id} 
                     >
                         <div className={styles.slideNumber}></div>
                         <CurrentSlide
@@ -81,7 +82,7 @@ function SlidesList({ slides, selection }: SlidesListProps) {
                             scale={SLIDE_PREVIEW_SCALE}
                             isSelected={slide.id === selection?.selectedSlideId}
                             className={styles.item}
-                            selectedObjId={selection?.selectedObjectId || null} // Передаем выбранный объект
+                            selectedObjId={""}
                         />
                     </div>
                 ))

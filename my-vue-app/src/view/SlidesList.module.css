@@ -8,7 +8,7 @@
 }
 
 .emptySlideList {
-    border-right: 2px dashed Silver; 
+    border-right: 2px dashed Silver;
     display: flex;
     justify-content: center;
     align-items: center;

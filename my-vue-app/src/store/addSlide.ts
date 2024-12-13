@@ -2,12 +2,12 @@ import { EditorType } from "./EditorType";
 import { SlideType } from "./PresentationType";
 
 function addSlide(editor: EditorType): EditorType {
-    function randomString(length: number, chars: string | any[]) {
-        var result = '';
-        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    function randomString(length: number, chars: string | unknown[]) {
+        let result = '';
+        for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
         return result;
     }
-    var randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    const randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     const newSlide: SlideType = {
         id: randId,
         objects: [],

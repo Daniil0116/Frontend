@@ -4,7 +4,7 @@ type PresentationType = {
 }
 
 type SlideType = {
-    [x: string]: any
+    [x: string]: unknown,
     id: string,
     objects: Array<SlideObject>,
     background:  Background

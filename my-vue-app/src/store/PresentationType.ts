@@ -52,4 +52,5 @@ export type {
     ImageObjectType,
     ColorBackground,
     ImageBackground,
+    SlideObject,
 }

@@ -1,10 +1,12 @@
 .slideList {
     border-right: 2px solid Silver;
+    overflow-y: auto;
 }
 
 .item {
     margin: 10px;
     border-radius: 10px;
+    pointer-events: none;
 }
 
 .emptySlideList {

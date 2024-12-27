@@ -8,6 +8,9 @@ import addImg from '../../icons/addImg.svg'
 import changeColorIcon from '../../icons/changeColorIcon.svg'
 import changeImgIcon from '../../icons/changeImgIcon.svg'
 import removeObj from '../../icons/removeObj.svg'
+import exportPres from '../../icons/exportPres.svg'
+import importPres from '../../icons/importPres.svg'
+import { renamePresentationTitle } from '../../store/renamePresentationTitle';
 import { addTextToSlide } from '../../store/addTextToSlide';
 import {addImageToSlide} from '../../store/addImageToSlide'
 import {removeObjectOnSlide} from '../../store/removeObjectOnSlide'
@@ -16,6 +19,9 @@ import { changeImgBack } from '../../store/changeImgBack';
 import { ColorPicker } from '../../components/colorPicker';
 import { useState } from 'react';
 import { ImageInput } from '../../components/ImageInput';
+import { exportPresentation } from '../../store/fileUtils';
+import { importPresentation } from '../../store/fileUtils';
+import { getEditor } from '../../store/editor';
 
 type TopPanelProps = {
     title: string;
@@ -24,6 +30,10 @@ type TopPanelProps = {
 function TopPanel({title}: TopPanelProps) {
     const [selectedColor, setSelectedColor] = useState("#000000");
     const [selectedImage, setSelectedImage] = useState("");
+
+    const onTitleChange: React.ChangeEventHandler = (event) => {
+        dispatch(renamePresentationTitle, (event.target as HTMLInputElement).value)
+    }
     
     function onAddSlide() : void {
         dispatch(addSlide)
@@ -58,12 +68,40 @@ function TopPanel({title}: TopPanelProps) {
         }
     }
 
+    function onExportPresentachion() {
+        const editor = getEditor();
+        exportPresentation(editor);
+    }
+
+    function onImportPresentachion(event: React.ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0];
+        if (file) {
+            importPresentation(file)
+                .then((parsedContent) => {
+                    dispatch(() => parsedContent);
+                })
+                .catch((err) => {
+                    console.error('Error importing presentation:', err);
+                    alert('Пожалуйста, проверьте формат файла');
+                });
+        }
+    }
+
     return (
         <div className={styles.topPanel}>
-            <input className={styles.topPanel_input} type="text" defaultValue={title}/>
+            <input className={styles.topPanel_input} type="text" defaultValue={title} onChange={onTitleChange}/>
             <div className={styles.topPanel_buttons}>
                 <Button className={styles.button} text={'Добавить слайд'} onClick={onAddSlide} image={""}></Button>
                 <Button className={styles.button} text={'Удалить слайд'} onClick={onRemoveSlide} image={""}></Button>
+                <Button className={styles.button} text={''} onClick={onExportPresentachion} image={exportPres}></Button>
+                <Button className={styles.button} text={''} onClick={() => document.getElementById('importFile')?.click()} image={importPres}></Button>
+                <input
+                    type="file"
+                    id="importFile"
+                    accept='.json'
+                    onChange={onImportPresentachion}
+                    className={styles.fileInput}
+                    style={{ display: 'none' }}/>
                 <Button className={styles.button} text={''} onClick={addText} image={addTextIcon}></Button>
                 <Button className={styles.button} text={''} onClick={addImage} image={addImg}></Button>
                 <Button className={styles.button} text={''} onClick={removeObject} image={removeObj}></Button>

@@ -14,6 +14,8 @@ function ImageObject({imageObject, scale = 1, isSelected}: ImageObjectProps) {
         left: `${imageObject.x * scale}px`,
         width: `${imageObject.width * scale}px`,
         height: `${imageObject.height * scale}px`,
+        cursor: isSelected ? 'move' : 'default', 
+        zIndex: 3,
     }
 
     if (isSelected) {

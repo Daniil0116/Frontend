@@ -1,0 +1,14 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+:root {
+  --topPanelHeight: 130px;
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - var(--topPanelHeight));
+}

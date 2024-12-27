@@ -1,47 +1,64 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from "react";
+import { dispatch } from ".././store/editor";
+import { EditorType } from ".././store/EditorType";
+import { moveObjectOnSlide } from ".././store/moveObjectOnSlide";
 
-function useDraggable(onDragEnd: (newPosition: { x: number; y: number }) => void) {
-    const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-    const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number } | null>(null);
-    const [isDragging, setIsDragging] = useState(false);
-
-    useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-            if (isDragging && initialMousePosition) {
-                const deltaX = event.clientX - initialMousePosition.x;
-                const deltaY = event.clientY - initialMousePosition.y;
-                setPosition(prev => ({
-                    x: prev.x + deltaX,
-                    y: prev.y + deltaY,
-                }));
-                setInitialMousePosition({ x: event.clientX, y: event.clientY });
-            }
-        };
-
-        const handleMouseUp = () => {
-            if (isDragging) {
-                onDragEnd(position);
-                setIsDragging(false);
-                setInitialMousePosition(null);
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-        };
-    }, [isDragging, initialMousePosition, position, onDragEnd]);
-
-    const onMouseDown = (event: React.MouseEvent) => {
-        event.preventDefault();
-        setInitialMousePosition({ x: event.clientX, y: event.clientY });
-        setIsDragging(true);
-    };
-
-    return { position, onMouseDown };
+type useDragAndDropProps = {
+    slideId: string;
 }
 
-export {useDraggable} ;
+function useDragAndDrop({slideId}: useDragAndDropProps) {
+    const [isDragging, setIsDragging] = useState(false);
+    const [draggedElemId, setDraggedObjId] = useState<string | null>(null);
+    const dragStartPos = useRef({x: 0, y: 0});
+    const objectStartPos = useRef({x: 0, y: 0});
+
+    function handleobjectMD(event: React.MouseEvent, objectId: string): void {
+        event.preventDefault();
+        setIsDragging(true);
+        setDraggedObjId(objectId);
+        dragStartPos.current = {x: event.clientX, y: event.clientY};
+
+        dispatch((currentEditor: EditorType) => {
+            const slide = currentEditor.presentation.slides.find(s => s.id === slideId);
+            const object = slide?.objects.find(e => e.id === objectId);
+            if (object) {
+              objectStartPos.current = {x: object.x, y: object.y};
+            }
+            return currentEditor;
+        });
+    }
+
+    function handleobjectMM(event: React.MouseEvent): void {
+        if (!isDragging || !draggedElemId) {
+            return;
+        }
+
+        const dx = event.clientX - dragStartPos.current.x;
+        const dy = event.clientY - dragStartPos.current.y;
+
+        dispatch((currentEditor: EditorType) => {
+            const slide = currentEditor.presentation.slides.find(s => s.id === slideId);
+            if (!slide) return currentEditor;
+            const object = slide.objects.find(e => e.id === draggedElemId);
+            if (!object) return currentEditor;
+
+            const newX = Math.max(0, Math.min(objectStartPos.current.x + dx, 935 - object.width));
+            const newY = Math.max(0, Math.min(objectStartPos.current.y + dy, 525 - object.height));
+
+            return moveObjectOnSlide(currentEditor, slideId, draggedElemId, newX, newY);
+        });
+    }
+
+    function handleobjectMU(): void {
+        setIsDragging(false);
+        setDraggedObjId(null);
+    }
+
+    return {
+        isDragging, 
+        handleobjectMD, handleobjectMM, handleobjectMU,
+    }
+}
+
+export {useDragAndDrop};

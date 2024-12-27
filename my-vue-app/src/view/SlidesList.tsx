@@ -25,6 +25,7 @@ function SlidesList({ slides, selection }: SlidesListProps) {
     function onSlideClick(slideId: string) {
         dispatch(setSelection, {
             selectedSlideId: slideId,
+            selectedObjectId: "",
         })
     }
     if (slides.length === 0) {

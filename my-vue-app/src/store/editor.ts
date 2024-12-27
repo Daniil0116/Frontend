@@ -1,29 +1,41 @@
-import {editor} from './data.ts'
-import { EditorType } from './EditorType.ts'
+import { editor } from './data.ts';
+import { loadSlides, saveSlides } from './localStorage.ts';
+import { validateEditor } from "./validation.ts";
 
-let _editor = editor
-type HandlerFunction = () => void;
-let _handler: HandlerFunction | null = null;
+let _editor = loadSlides() || editor 
+let _handler: Function | null = null 
 
-function getEditor() {
+function getEditor() 
+{
+    loadSlides();
     return _editor
 }
 
-function setEditor(newEditor: EditorType) {
-    _editor = newEditor
+function setEditor(newEditor: any) 
+{
+    _editor = newEditor;
+    saveSlides(_editor);
 }
-type ModifyFunction = (editor: EditorType, payload?: object) => EditorType;
-function dispatch(modifyFn: ModifyFunction, payload?: object): void {
-    const newEditor = modifyFn(_editor, payload);
-    setEditor(newEditor);
 
+function dispatch(modifyFn: Function, payload?: Object): void 
+{
+    const newEditor = modifyFn(_editor, payload)
+    setEditor(newEditor)
     if (_handler) {
-        _handler();
+        _handler()
     }
 }
 
-function addEditorChangeHandler(handler: HandlerFunction): void {
-    _handler = handler;
+function addEditorChangeHandler(handler: Function): void
+{
+    _handler = handler
+}
+
+const initState = loadSlides();
+if (initState && validateEditor(initState.presentation)) {
+    setEditor(initState)
+} else {
+    console.error('Invalid init state from LS')
 }
 
 export {

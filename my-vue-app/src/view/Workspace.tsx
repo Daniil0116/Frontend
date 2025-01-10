@@ -5,8 +5,8 @@ import styles from './Workspace.module.css'
 
 type WorkspaceProps = {
     slides: SlideType,
-    selectedSlideIndex: number | null;
-    selectedObjId: string | null
+    selectedSlideIndex: number | null,
+    selectedObjId: string | null,
 }
 const SLIDE_WIDTH = 935
 const SLIDE_HEIGHT = 525

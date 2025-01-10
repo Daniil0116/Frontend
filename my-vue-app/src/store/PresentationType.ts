@@ -38,6 +38,7 @@ type TextObjectType = BaseSlideObject & {
     fontFamily: string,
     fontSize: number,
     fontColor: string,
+    value: string, 
 }
 
 type ImageObjectType = BaseSlideObject & {

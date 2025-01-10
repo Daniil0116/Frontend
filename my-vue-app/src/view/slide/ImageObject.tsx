@@ -22,7 +22,7 @@ function ImageObject({imageObject, scale = 1, isSelected}: ImageObjectProps) {
         imageObjectStyles.border = '3px solid #0b57d0'
     }
     return (
-        <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.src}`}/>
+        <img style={imageObjectStyles} src={`${imageObject.src}`}/>
     )
 }
 

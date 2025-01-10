@@ -25,6 +25,7 @@ function changeColorBack(editor: EditorType): EditorType {
         selection: {
             selectedSlideId: editor.selection.selectedSlideId,
             selectedObjectId: editor.selection.selectedObjectId,
+            elementId: ""
         },
     };
 }

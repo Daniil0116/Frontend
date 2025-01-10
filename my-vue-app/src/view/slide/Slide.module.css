@@ -12,4 +12,5 @@
     border: 3px solid #0b57d0; 
     background-color: #d1e8f3; 
     z-index: 10; 
+    cursor: pointer;
   }

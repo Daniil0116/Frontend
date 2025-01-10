@@ -16,7 +16,7 @@ function addTextToSlide(editor: EditorType): EditorType {
         width: 150,
         height: 140,
         type: 'text',
-        text: "Привет, мир!",
+        value: "",
         fontFamily: "Arial",
         fontSize: 24,
         fontColor: "black",
@@ -45,7 +45,8 @@ function addTextToSlide(editor: EditorType): EditorType {
         },
         selection: {
             selectedSlideId: editor.selection.selectedSlideId,
-            selectedObjectId: newTextObject.id, 
+            selectedObjectId: newTextObject.id,
+            elementId: ""
         },
     };
 }

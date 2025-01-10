@@ -1,5 +1,5 @@
 import { TextObjectType } from "../../store/PresentationType.ts";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 
 type TextObjectProps = {
     textObject: TextObjectType,
@@ -8,8 +8,14 @@ type TextObjectProps = {
 }
 
 function TextObject({ textObject, scale = 1, isSelected }: TextObjectProps) {
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [textValue, setTextValue] = useState(() => {
+        const storedText = localStorage.getItem(`text_${textObject.id}`);
+        return storedText ? storedText : textObject.value; 
+    });
+    
     const textObjectStyles: CSSProperties = {
-        margin: 0,
         position: 'absolute',
         top: `${textObject.y * scale}px`, 
         left: `${textObject.x * scale}px`, 
@@ -17,7 +23,16 @@ function TextObject({ textObject, scale = 1, isSelected }: TextObjectProps) {
         height: `${textObject.height * scale}px`, 
         fontSize: `${textObject.fontSize * scale}px`, 
         cursor: isSelected ? 'move' : 'default', 
-        zIndex: 3,
+        margin: 0,
+    };
+
+    const handleDoubleClick = () => { setIsEditing(true); };
+    
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { setTextValue(e.target.value); };
+    
+    const handleBlur = () => { 
+        setIsEditing(false); 
+        localStorage.setItem(`text_${textObject.id}`, textValue);
     };
 
     if (isSelected) {
@@ -25,7 +40,21 @@ function TextObject({ textObject, scale = 1, isSelected }: TextObjectProps) {
     }
 
     return (
-        <p style={textObjectStyles}>{textObject.text}</p>
+        <>
+        {isEditing ? (
+            <input type="text"
+                value={textValue}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                autoFocus
+                style={{...textObjectStyles, fontSize: `${textObject.fontSize * scale}px`,}}
+                />
+        ) : (
+            <p onDoubleClick={handleDoubleClick} style={textObjectStyles}>
+                {textValue}
+            </p>
+            )}
+        </>
     );
 }
 

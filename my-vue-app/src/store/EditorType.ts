@@ -1,6 +1,7 @@
 import {PresentationType} from "./PresentationType.ts";
 
 type SelectionType = {
+    elementId: string;
     selectedSlideId: string;
     selectedObjectId: string | null;
 }

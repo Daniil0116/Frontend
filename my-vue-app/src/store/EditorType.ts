@@ -2,7 +2,7 @@ import {PresentationType} from "./PresentationType.ts";
 
 type SelectionType = {
     elementId: string;
-    selectedSlideId: string;
+    selectedSlideId: string | null;
     selectedObjectId: string | null;
 }
 

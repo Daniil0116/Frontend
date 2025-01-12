@@ -7,6 +7,8 @@ import { dispatch } from "../../store/editor.ts";
 import { setSelection } from "../../store/setSelection.ts";
 import { useDragAndDrop } from "../../hooks/useDragAndDropForObject.ts";
 import { useResizeObject } from "../../hooks/useResizeObjects";
+import { useAppSelector } from "../../hooks/useAppSelector.ts";
+import { SelectionType } from "../../store/EditorType.ts";
 
 
 const SLIDE_WIDTH = 935;
@@ -15,13 +17,14 @@ const SLIDE_HEIGHT = 525;
 type SlideProps = {
     slide: SlideType | null,
     scale?: number,
-    isSelected: boolean,
+    selection?: SelectionType,
     className: string,
     selectedObjId: string | null
     showResizeHandles?: boolean;
 }
 
-function CurrentSlide({ slide, scale = 1, isSelected, className, selectedObjId, showResizeHandles = true }: SlideProps) {
+function CurrentSlide({ slide, scale = 1, className, selectedObjId, showResizeHandles = true }: SlideProps) {
+    const selection = useAppSelector((editor => editor.selection))
     const { handleobjectMD, handleobjectMM, handleobjectMU } = useDragAndDrop({ slideId: slide?.id ?? '' });
     const { isResizing, handleResizeMD, handleResizeMM, handleResizeMU } = useResizeObject({ slideId: slide?.id ?? '' });
 
@@ -54,9 +57,10 @@ function CurrentSlide({ slide, scale = 1, isSelected, className, selectedObjId, 
         height: `${SLIDE_HEIGHT * scale}px`,
     }
 
-    if (isSelected) {
-        slideStyles.border = '3px solid #0b57d0';
+    if (selection?.selectedObjectId === slide.id) {
+        slideStyles.border = '3px solid #0b57d0'
     }
+    
 
     return (
         <div style={slideStyles} className={`${styles.slide} ${className}`}
@@ -80,9 +84,9 @@ function CurrentSlide({ slide, scale = 1, isSelected, className, selectedObjId, 
                     onMouseDown={(event) => handleobjectMD(event, SlideObject.id)}
                     style={{ position: 'relative' }}>
                     {SlideObject.type === "text" ? (
-                        <TextObject textObject={SlideObject} scale={scale} isSelected={SlideObject.id === selectedObjId} />
+                        <TextObject textObject={SlideObject} scale={scale} selection={selection} />
                     ) : (
-                        <ImageObject imageObject={SlideObject} scale={scale} isSelected={SlideObject.id === selectedObjId} />
+                        <ImageObject imageObject={SlideObject} scale={scale} selection={selection} />
                     )}
                     {isSelectionObj && showResizeHandles && (
                         <>

@@ -1,12 +1,8 @@
 import { EditorType } from "./EditorType";
 import { TextObjectType } from "./PresentationType";
+import { randomString } from "./randomID";
 
 function addTextToSlide(editor: EditorType): EditorType {
-    function randomString(length: number, chars: string | unknown[]) {
-        let result = '';
-        for (let i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
-    }
     const randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     const textObject: TextObjectType = {
@@ -20,6 +16,7 @@ function addTextToSlide(editor: EditorType): EditorType {
         fontFamily: "Arial",
         fontSize: 24,
         fontColor: "black",
+        text:''
     };
 
 
@@ -36,6 +33,7 @@ function addTextToSlide(editor: EditorType): EditorType {
         }
         return slide;
     });
+    console.log('новый текст')
 
     return {
         ...editor,

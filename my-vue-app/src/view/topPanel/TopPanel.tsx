@@ -1,7 +1,7 @@
 import styles from './TopPanel.module.css'
 import { Button } from "../../components/Button"
-import { removeSlide } from "../../store/removeSlide"
-import { addSlide } from "../../store/addSlide"
+// import { removeSlide } from "../../store/removeSlide"
+// import { addSlide } from "../../store/addSlide"
 import { dispatch } from '../../store/editor';
 import addTextIcon from '../../icons/addTextIcon.svg'
 import addImg from '../../icons/addImg.svg'
@@ -11,23 +11,33 @@ import removeObj from '../../icons/removeObj.svg'
 import exportPres from '../../icons/exportPres.svg'
 import importPres from '../../icons/importPres.svg'
 import { renamePresentationTitle } from '../../store/renamePresentationTitle';
-import { addTextToSlide } from '../../store/addTextToSlide';
+//import { addTextToSlide } from '../../store/addTextToSlide';
 import { addImageToSlide } from '../../store/addImageToSlide'
-import { removeObjectOnSlide } from '../../store/removeObjectOnSlide'
-import { changeColorBack } from '../../store/changeColorBack';
-import { changeImgBack } from '../../store/changeImgBack';
+//import { removeObjectOnSlide } from '../../store/removeObjectOnSlide'
+//import { changeColorBack } from '../../store/changeColorBack';
+//import { changeImgBack } from '../../store/changeImgBack';
 import { ColorPicker } from '../../components/colorPicker';
 import { useState } from 'react';
 import { ImageInput } from '../../components/ImageInput';
 import { exportPresentation } from '../../store/fileUtils';
 import { importPresentation } from '../../store/fileUtils';
 import { getEditor } from '../../store/editor';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppActions } from '../../hooks/useAppActions';
 
-type TopPanelProps = {
-    title: string;
-}
+// type TopPanelProps = {
+//     title: string;
+// }
 
-function TopPanel({ title }: TopPanelProps) {
+function TopPanel() {
+
+    const title = useAppSelector((editor => editor.presentation.title))
+
+    const {addSlide, removeSlide, setEditor, addTextToSlide, addImageToSlide, changeColorBack, changeImgBack, 
+        removeObjectOnSlide, renamePresentationTitle, 
+    } = useAppActions()
+
+
     const [selectedColor, setSelectedColor] = useState("#000000");
     const [selectedImage, setSelectedImage] = useState("");
     

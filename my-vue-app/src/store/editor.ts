@@ -1,8 +1,8 @@
-import { editor } from './data.ts';
+import { defaultEditor } from './data.ts';
 import { loadSlides, saveSlides } from './localStorage.ts';
 import { validateEditor } from "./validation.ts";
 
-let _editor = loadSlides() || editor 
+let _editor = loadSlides() || defaultEditor 
 let _handler: Function | null = null 
 
 function getEditor() 

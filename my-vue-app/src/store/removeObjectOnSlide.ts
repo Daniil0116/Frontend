@@ -27,7 +27,8 @@ function removeObjectOnSlide(editor: EditorType): EditorType {
         },
         selection: {
             selectedSlideId: selectedSlideId,
-            selectedObjectId: newSelectedObjectId, 
+            selectedObjectId: newSelectedObjectId,
+            elementId: ""
         },
     };
     

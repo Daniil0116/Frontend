@@ -1,9 +1,10 @@
-import {EditorType, SelectionType} from "./EditorType.ts";
+import {EditorType} from "./EditorType.ts";
+import { SetSelectionAction } from "./redux/actions.ts";
 
-function setSelection(editor: EditorType, newSelection: SelectionType): EditorType {
+function setSelection(editor: EditorType, action: SetSelectionAction): EditorType {
     return {
         ...editor,
-        selection: newSelection,
+        selection: action.payload,
     }
 }
 

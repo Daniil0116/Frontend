@@ -9,10 +9,10 @@ function moveImage(
         elements: slide.objects.map((img) => {
             if (img.id === elementId) {
                 return { ...img, x: newX, y: newY }
-            } 
+            }
             return img;
         })
     }
 }
 
-export  {moveImage};
+export { moveImage };

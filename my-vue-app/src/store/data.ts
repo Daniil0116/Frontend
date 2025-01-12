@@ -48,7 +48,7 @@ const presentation: PresentationType = {
     ]
 }
 
-const editor: EditorType = {
+const defaultEditor: EditorType = {
     presentation,
     selection: {
         selectedSlideId: presentation.slides[0].id,
@@ -57,4 +57,4 @@ const editor: EditorType = {
     }
 }
 
-export { editor, presentation};
+export { defaultEditor, presentation};

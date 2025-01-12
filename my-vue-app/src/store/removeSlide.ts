@@ -23,7 +23,8 @@ function removeSlide(editor: EditorType): EditorType {
         },
         selection: {
             selectedSlideId: newSelectedSlideId !== null ? newSelectedSlideId : "defaultId",
-            selectedObjectId: null
+            selectedObjectId: null,
+            elementId: ""
         },
     }
 }

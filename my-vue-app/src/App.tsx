@@ -2,26 +2,22 @@ import styles from './App.module.css'
 import { SlidesList } from "./view/SlidesList.tsx";
 import { TopPanel } from "./view/topPanel/TopPanel.tsx";
 import { Workspace } from "./view/Workspace.tsx";
-import { EditorType } from "./store/EditorType.ts";
+import { HistoryType } from './store/history.ts';
+import { HistoryContext } from './hooks/historyContenx.ts';
 
 type AppProps = {
-    editor: EditorType,
+    history: HistoryType,
 }
-function App({ editor }: AppProps) {
-    //const selectedSlideIndex = editor.presentation.slides.findIndex(slide => slide.id === editor.selection?.selectedSlideId);
+
+function App({history}: AppProps) {
     return (
-        <>
+        <HistoryContext.Provider value={history}>
             <TopPanel></TopPanel>
             <div className={styles.container}>
                 <SlidesList></SlidesList>
                 <Workspace></Workspace>
             </div>
-            {/* <TopPanel title={editor.presentation.title}></TopPanel>
-            <div className={styles.container}>
-                <SlidesList slides={editor.presentation.slides} selection={editor.selection}></SlidesList>
-                <Workspace slides={editor.presentation.slides}  selectedSlideIndex={selectedSlideIndex >= 0 ? selectedSlideIndex : null} selectedObjId={editor.selection.selectedObjectId}></Workspace>
-            </div> */}
-        </>
+        </HistoryContext.Provider>
     )
 }
 

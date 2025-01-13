@@ -16,7 +16,7 @@ import { moveObjectOnSlide } from "../moveObjectOnSlide";
 import { resizeSlideObject } from "../resizeSlideObject";
 import { moveSlide } from "../moveSlide";
 import { loadSlides, saveSlides } from "../localStorage";
-import { exportPresentation, importPresentation } from "../fileUtils";
+import { exportPresentation } from "../fileUtils";
 
 function editorReducer(editor: EditorType = defaultEditor, action: EditorAction): EditorType {
     switch (action.type) {
@@ -57,23 +57,17 @@ function editorReducer(editor: EditorType = defaultEditor, action: EditorAction)
         case ActionType.IMPORT_PRESENTATION:
             return {
                 ...editor,
-                ...action.payload, // Обновляем редактор новым содержимым
+                ...action.payload,
             };
+        case ActionType.UNDO_EDITOR:
+            return editor
+        case ActionType.REDO_EDITOR:
+            return editor
 
         default:
             return editor
     }
 }
-
-// export const editorSlideElementsReducer = (state: EditorType, action: UnknownAction): EditorType => {
-//     switch (action.type) {
-//         case 'ADD_TEXT' : {
-//             return addTextToSlide(state)
-//         }
-//         default:
-//           return state;
-//       }
-//     };
 
 export {
     editorReducer,

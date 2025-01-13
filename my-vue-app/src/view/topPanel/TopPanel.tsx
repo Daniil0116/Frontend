@@ -7,20 +7,26 @@ import changeImgIcon from '../../icons/changeImgIcon.svg'
 import removeObj from '../../icons/removeObj.svg'
 import exportPres from '../../icons/exportPres.svg'
 import importPres from '../../icons/importPres.svg'
-import { ColorPicker } from '../../components/colorPicker';
-import { useCallback, useState } from 'react';
-import { ImageInput } from '../../components/ImageInput';
-import { importPresentation } from '../../store/fileUtils';
-import { getEditor } from '../../store/editor';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { useAppActions } from '../../hooks/useAppActions';
+import { ColorPicker } from '../../components/colorPicker'
+import { useCallback, useEffect, useState } from 'react'
+import { ImageInput } from '../../components/ImageInput'
+import { importPresentation } from '../../store/fileUtils'
+import { getEditor } from '../../store/editor'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { useAppActions } from '../../hooks/useAppActions'
 import { useDispatch } from 'react-redux'
 import { importPresentationAction } from '../../store/redux/slideActionCreators'
 import { EditorType } from '../../store/EditorType'
+import { HistoryContext } from '../../hooks/historyContenx'
+import React from 'react'
+import undo from "../../icons/undo.svg"
+import redo from "../../icons/redo.svg"
 
 function TopPanel() {
 
     const title = useAppSelector((editor => editor.presentation.title))
+
+    const history = React.useContext(HistoryContext)
 
     const {addSlide, removeSlide, setEditor, addTextToSlide, addImageToSlide, changeColorBack, changeImgBack, 
         removeObjectOnSlide, renamePresentationTitle, exportPresentation,
@@ -57,6 +63,38 @@ function TopPanel() {
         }
     }, [dispatch]);
     
+    function onUndo() {
+        const newEditor = history.undo()
+        if (newEditor) {
+            setEditor(newEditor)
+        }
+    }
+
+    function onRedo() {
+        const newEditor = history.redo()
+        if (newEditor) {
+            setEditor(newEditor)
+        }
+    }
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.metaKey || event.ctrlKey) {
+                if (event.key === 'z' || event.key === 'Z' || event.key === 'Я' || event.key === 'я') {
+                    event.preventDefault();
+                    onUndo();
+                } else if (event.key === 'y' || event.key === 'Y' || event.key === 'Н' || event.key === 'н') {
+                    event.preventDefault();
+                    onRedo();
+                }
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+    }, []);
+    
 
     return (
         <div className={styles.topPanel}>
@@ -64,6 +102,8 @@ function TopPanel() {
             <div className={styles.topPanel_buttons}>
                 <Button className={styles.button} text={'Добавить слайд'} onClick={addSlide} image={""}></Button>
                 <Button className={styles.button} text={'Удалить слайд'} onClick={removeSlide} image={""}></Button>
+                <Button className={styles.button} text={''} onClick={onUndo} image={undo}></Button>
+                <Button className={styles.button} text={''} onClick={onRedo} image={redo}></Button>
                 <Button className={styles.button} text={''} onClick={onExportPresentation} image={exportPres}></Button> 
                 <Button className={styles.button} text={''} onClick={() => document.getElementById('importFile')?.click()} image={importPres}></Button>
                 <input

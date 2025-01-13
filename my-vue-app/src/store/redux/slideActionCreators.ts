@@ -1,5 +1,3 @@
-//import { EditorType } from "../EditorType"
-import { Dispatch } from "redux"
 import { EditorType } from "../EditorType"
 import { ActionType } from "./actions"
 import {importEditorAction} from "./actions"
@@ -108,13 +106,6 @@ function exportPresentation(editor:EditorType) {
         payload: editor
     }
 }
-
-// function importPresentation(editor:EditorType) {
-//     return {
-//         type: ActionType.IMPORT_PRESENTATION,
-//         payload: editor
-//     }
-// }
 
 const importPresentationAction = (editor: EditorType): importEditorAction => ({
     type: ActionType.IMPORT_PRESENTATION,

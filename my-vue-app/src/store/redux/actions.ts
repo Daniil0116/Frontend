@@ -22,6 +22,8 @@ enum ActionType {
     MOVE_SLIDE = 'moveSlide',
     SAVE_SLIDES = 'saveSlides',
     LOAD_SLIDES = 'loadSlides',
+    UNDO_EDITOR = 'undoEditor',
+    REDO_EDITOR = 'redoEditor',
 }
 
 type AddSlideAction = {
@@ -110,15 +112,24 @@ type exportPresentationAction = {
     type: ActionType.EXPORT_PRESENTATION
 }
 
+type undoEditorAction = {
+    type: ActionType.UNDO_EDITOR
+};
+
+type redoEditorAction = {
+    type: ActionType.REDO_EDITOR
+};
+
 type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
     | addTextToSlideAction | addImageToSlideAction | changeColorBackAction | changeImgBackAction
     | removeObjectOnSlideAction | renamePresentationTitleAction | moveObjectOnSlideAction
     | resizeSlideObjectAction | moveSlideAction | saveSlidesAction | loadSlidesAction
-    | importEditorAction | exportPresentationAction
+    | importEditorAction | exportPresentationAction | undoEditorAction | redoEditorAction
 
 export {
     ActionType,
     type SetSelectionAction,
     type EditorAction,
-    type importEditorAction
+    type importEditorAction,
+    type undoEditorAction
 }

@@ -12,15 +12,20 @@ import { changeImgBack } from "../changeImgBack";
 import { removeObjectOnSlide } from "../removeObjectOnSlide";
 import { renamePresentationTitle } from "../renamePresentationTitle";
 import { addImageToSlide } from "../addImageToSlide";
+import { moveObjectOnSlide } from "../moveObjectOnSlide";
+import { resizeSlideObject } from "../resizeSlideObject";
+import { moveSlide } from "../moveSlide";
+import { loadSlides, saveSlides } from "../localStorage";
+import { exportPresentation, importPresentation } from "../fileUtils";
 
 function editorReducer(editor: EditorType = defaultEditor, action: EditorAction): EditorType {
     switch (action.type) {
-        case ActionType.ADD_SLIDE: 
+        case ActionType.ADD_SLIDE:
             return addSlide(editor)
         case ActionType.REMOVE_SLIDE:
             return removeSlide(editor)
-        case ActionType.SET_SELECTION: 
-            return setSelection(editor, action)
+        case ActionType.SET_SELECTION:
+            return setSelection(editor, action);
         case ActionType.SET_EDITOR:
             return action.payload
         case ActionType.ADD_TEXT:
@@ -35,8 +40,26 @@ function editorReducer(editor: EditorType = defaultEditor, action: EditorAction)
             return removeObjectOnSlide(editor)
         case ActionType.RENAME_PRESENTATION:
             return renamePresentationTitle(editor, action.payload)
-        // case ActionType.IMPORT_EDITOR:
-        //     return action.payload
+        case ActionType.MOVE_OBJECT:
+            return moveObjectOnSlide(editor, action.payload.slideId, action.payload.objectId, action.payload.x, action.payload.y,)
+        case ActionType.RESIZE_OBJECT:
+            return resizeSlideObject(editor, action.payload.slideId, action.payload.objectId, action.payload.x, action.payload.y, 
+                action.payload.width, action.payload.height)
+        case ActionType.MOVE_SLIDE:
+            return moveSlide(editor, action.payload.draggedSlideId, action.payload.targetSlideId)
+        case ActionType.SAVE_SLIDES:
+            saveSlides(action.payload)
+            return action.payload
+        case ActionType.LOAD_SLIDES:
+            return loadSlides() ?? editor
+        case ActionType.EXPORT_PRESENTATION:
+            return exportPresentation(editor) ?? editor
+        case ActionType.IMPORT_PRESENTATION:
+            return {
+                ...editor,
+                ...action.payload, // Обновляем редактор новым содержимым
+            };
+
         default:
             return editor
     }

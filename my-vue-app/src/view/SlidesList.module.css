@@ -22,3 +22,63 @@
     text-align: center;
     color: rgb(170, 170, 170);
 }
+
+.selectedSlide {
+    margin: 10px;
+    border-radius: 10px;
+    pointer-events: none;
+    border: 3px solid #0b57d0;
+}
+/* 
+.slideWrapper {
+    margin: 12px;
+    margin-left: 50px;
+    border-radius: 10px;
+    position: relative;
+    
+}
+
+.item {
+    border-radius: 10px;
+    pointer-events: none;
+} 
+
+.slide {
+    border-radius: inherit;
+} */
+
+/* .selectedSlide {
+    outline: 3px solid #0b57d0;
+} */
+
+/* .slideList {
+    border-right: 2px solid #94aec9;
+    overflow: auto;
+    background-color: #000e55;
+}
+
+.slideNumber {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: silver;
+    transform: translateY(-50%); 
+    padding: 2px 5px; 
+    border-radius: 3px;
+    z-index: 10; 
+    pointer-events: none;
+    margin-right: 30px;
+}
+
+.slideContent {
+    display: flex;
+    border-radius: 10px;
+}
+
+.selectedSlide .slideNumber {
+    color: #e2bb0a;
+    background-color: #0446b0;
+} */

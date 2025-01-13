@@ -1,13 +1,13 @@
 type PresentationType = {
     title: string,
-    slides: Array<SlideType>,
+    slides: Array<SlideType>
 }
 
 type SlideType = {
     [x: string]: unknown,
     id: string,
     objects: Array<SlideObject>,
-    background:  Background
+    background:  Background | undefined,
 }
 
 type Background = ColorBackground | ImageBackground

@@ -1,36 +1,35 @@
 import { useState, useRef } from "react";
-import { dispatch } from ".././store/editor";
-import { EditorType } from ".././store/EditorType";
-import { resizeSlideObject } from ".././store/resizeSlideObject";
+import { useAppActions } from "./useAppActions";
+import { useAppSelector } from "./useAppSelector";
 
 type UseResizeObjectProps = {
     slideId: string;
 }
 
-function useResizeObject({slideId}: UseResizeObjectProps) {
+function useResizeObject({ slideId }: UseResizeObjectProps) {
     const [isResizing, setIsResizing] = useState(false);
     const [resizedObjectId, setResizedObjectId] = useState<string | null>(null);
-    const startSize = useRef({width: 0, height: 0});
-    const startMousePos = useRef({x: 0, y: 0});
-    const initPos = useRef({x: 0, y: 0});
+    const startSize = useRef({ width: 0, height: 0 });
+    const startMousePos = useRef({ x: 0, y: 0 });
+    const initPos = useRef({ x: 0, y: 0 });
     const resizeDirect = useRef<string | null>(null);
+    const editor = useAppSelector(state => state);
+    const { resizeSlideObject } = useAppActions();
+
 
     function handleResizeMD(event: React.MouseEvent, objectId: string, direction: string): void {
         event.preventDefault();
         setIsResizing(true);
         setResizedObjectId(objectId);
         resizeDirect.current = direction;
-        startMousePos.current = {x: event.clientX, y: event.clientY};
-        
-        dispatch((currentEditor: EditorType) => {
-            const slide = currentEditor.presentation.slides.find(s => s.id === slideId);
-            const object = slide?.objects.find(e => e.id === objectId);
-            if (object) {
-                startSize.current = {width: object.width, height: object.height};
-                initPos.current = {x: object.x, y: object.y};
-            }
-            return currentEditor;
-        });
+        startMousePos.current = { x: event.clientX, y: event.clientY };
+
+        const slide = editor.presentation.slides.find(s => s.id === slideId);
+        const object = slide?.objects.find(el => el.id === objectId);
+        if (object) {
+            startSize.current = { width: object.width, height: object.height };
+            initPos.current = { x: object.x, y: object.y };
+        }
     }
 
     function handleResizeMM(event: React.MouseEvent): void {
@@ -82,12 +81,10 @@ function useResizeObject({slideId}: UseResizeObjectProps) {
                 break;
         }
 
-        dispatch((currentEditor: EditorType) => {
-            return resizeSlideObject(
-                currentEditor, slideId, resizedObjectId,
-                newX, newY, newWidth, newHeight
-            );
-        });
+        resizeSlideObject(
+            slideId, resizedObjectId,
+            newX, newY, newWidth, newHeight
+        );
     }
 
     function handleResizeMU(): void {
@@ -102,4 +99,4 @@ function useResizeObject({slideId}: UseResizeObjectProps) {
     };
 }
 
-export  {useResizeObject};
+export { useResizeObject };

@@ -1,4 +1,8 @@
+//import { EditorType } from "../EditorType"
+import { Dispatch } from "redux"
+import { EditorType } from "../EditorType"
 import { ActionType } from "./actions"
+import {importEditorAction} from "./actions"
 
 function addSlide() {
     return {
@@ -42,11 +46,81 @@ function removeObjectOnSlide() {
     }
 }
 
-function renamePresentationTitle() {
+function renamePresentationTitle(newTitle: string) {
     return {
-        type: ActionType.RENAME_PRESENTATION
+        type: ActionType.RENAME_PRESENTATION,
+        payload: newTitle
     }
 }
+
+function moveObjectOnSlide(slideId: string, objectId: string,
+    newX: number, newY: number) {
+    return {
+        type: ActionType.MOVE_OBJECT,
+        payload: {
+            slideId,
+            objectId,
+            x: newX,
+            y: newY,
+        }
+    }
+}
+
+function resizeSlideObject(slideId: string, objectId: string,
+    newX: number, newY: number,
+    newWidth: number, newHeight: number) {
+    return {
+        type: ActionType.RESIZE_OBJECT,
+        payload: {
+            slideId, objectId,
+            x: newX, y: newY,
+            width: newWidth, height: newHeight
+        }
+    }
+}
+
+function moveSlide(draggedSlideId: string, targetSlideId: string) {
+    return {
+        type: ActionType.MOVE_SLIDE,
+        payload: {
+            draggedSlideId: draggedSlideId, targetSlideId: targetSlideId
+        }
+    }
+}
+
+function saveSlides(editor: EditorType) {
+    return {
+        type: ActionType.SAVE_SLIDES,
+        payload: editor
+    }
+}
+
+function loadSlides(editor: EditorType) {
+    return {
+        type: ActionType.LOAD_SLIDES,
+        payload: editor
+    }
+}
+
+function exportPresentation(editor:EditorType) {
+    return {
+        type: ActionType.EXPORT_PRESENTATION,
+        payload: editor
+    }
+}
+
+// function importPresentation(editor:EditorType) {
+//     return {
+//         type: ActionType.IMPORT_PRESENTATION,
+//         payload: editor
+//     }
+// }
+
+const importPresentationAction = (editor: EditorType): importEditorAction => ({
+    type: ActionType.IMPORT_PRESENTATION,
+    payload: editor,
+});
+
 
 export {
     addSlide,
@@ -57,4 +131,11 @@ export {
     changeImgBack,
     removeObjectOnSlide,
     renamePresentationTitle,
+    moveObjectOnSlide,
+    resizeSlideObject,
+    moveSlide,
+    saveSlides,
+    loadSlides,
+    exportPresentation,
+    importPresentationAction,
 }

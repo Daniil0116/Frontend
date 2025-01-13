@@ -15,6 +15,7 @@ const slide1: SlideType = {
             fontFamily: 'Roboto',
             fontSize: 100,
             fontColor: '#000000',
+            text:'',
         }
     ],
     background: {type: 'color', color: 'MediumBlue'},
@@ -33,6 +34,7 @@ const slide2: SlideType = {
             fontFamily: 'Roboto',
             fontSize: 22,
             fontColor: '#000000',
+            text:'',
         }
     ],
     background: {type: 'color', color: 'green'},

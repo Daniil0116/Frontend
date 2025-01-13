@@ -9,14 +9,19 @@ enum ActionType {
 
     SET_EDITOR = 'setEditor',
 
-    IMPORT_EDITOR = 'IMPORT_EDITOR',
-    EXPORT_EDITOR = 'EXPORT_EDITOR',
+    IMPORT_PRESENTATION = 'importPresentation',
+    EXPORT_PRESENTATION = 'exportPresentation',
     ADD_TEXT = 'addText',
     ADD_IMAGE = 'addImageToSlide',
     CHANGE_COLOR_BACK = 'changeColorBack',
     CHANGE_IMG_BACK = 'changeImgBack',
     REMOVE_OBJECT = 'removeObjectOnSlide',
     RENAME_PRESENTATION = 'renamePresentationTitle',
+    MOVE_OBJECT = 'moveObjectOnSlide',
+    RESIZE_OBJECT = 'resizeSlideObject',
+    MOVE_SLIDE = 'moveSlide',
+    SAVE_SLIDES = 'saveSlides',
+    LOAD_SLIDES = 'loadSlides',
 }
 
 type AddSlideAction = {
@@ -37,41 +42,83 @@ type SetEditorAction = {
     payload: EditorType,
 }
 
-type addTextToSlide = {
+type addTextToSlideAction = {
     type: ActionType.ADD_TEXT,
 };
 
-type addImageToSlide = {
+type addImageToSlideAction = {
     type: ActionType.ADD_IMAGE,
 }
 
-type changeColorBack = {
+type changeColorBackAction = {
     type: ActionType.CHANGE_COLOR_BACK,
 }
 
-type changeImgBack = {
+type changeImgBackAction = {
     type: ActionType.CHANGE_IMG_BACK,
 }
 
-type removeObjectOnSlide = {
+type removeObjectOnSlideAction = {
     type: ActionType.REMOVE_OBJECT,
 }
 
-type renamePresentationTitle = {
+type renamePresentationTitleAction = {
     type: ActionType.RENAME_PRESENTATION,
     payload: string,
 }
-// type importEditorAction = {
-//     type: ActionType.IMPORT_EDITOR,
-//     payload: File,
-// }
 
-type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction 
-| addTextToSlide | addImageToSlide | changeColorBack | changeImgBack | removeObjectOnSlide | renamePresentationTitle
+type moveObjectOnSlideAction = {
+    type: ActionType.MOVE_OBJECT,
+    payload: {
+        slideId: string, objectId: string,
+        x: number, y: number
+    }
+}
+
+type resizeSlideObjectAction = {
+    type: ActionType.RESIZE_OBJECT,
+    payload: {
+        slideId: string, objectId: string,
+        x: number, y: number,
+        width: number, height: number
+    }
+}
+
+type moveSlideAction = {
+    type: ActionType.MOVE_SLIDE,
+    payload: {
+        draggedSlideId: string, targetSlideId: string
+    }
+}
+
+type saveSlidesAction = {
+    type: ActionType.SAVE_SLIDES,
+    payload: EditorType
+}
+
+type loadSlidesAction = {
+    type: ActionType.LOAD_SLIDES,
+    payload: EditorType
+}
+
+type importEditorAction = {
+    type: ActionType.IMPORT_PRESENTATION,
+    payload: EditorType
+}
+
+type exportPresentationAction = {
+    type: ActionType.EXPORT_PRESENTATION
+}
+
+type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
+    | addTextToSlideAction | addImageToSlideAction | changeColorBackAction | changeImgBackAction
+    | removeObjectOnSlideAction | renamePresentationTitleAction | moveObjectOnSlideAction
+    | resizeSlideObjectAction | moveSlideAction | saveSlidesAction | loadSlidesAction
+    | importEditorAction | exportPresentationAction
 
 export {
     ActionType,
     type SetSelectionAction,
     type EditorAction,
-    //type addTextToSlide
+    type importEditorAction
 }

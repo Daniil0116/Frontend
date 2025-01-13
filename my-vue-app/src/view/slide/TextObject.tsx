@@ -1,13 +1,13 @@
-import { dispatch } from "../../store/editor.ts";
-import { SelectionType } from "../../store/EditorType.ts";
+//import { dispatch } from "../../store/editor.ts";
+//import { SelectionType } from "../../store/EditorType.ts";
 import { TextObjectType } from "../../store/PresentationType.ts";
 import { CSSProperties, useState } from "react";
-import { setSelection } from "../../store/setSelection.ts";
+//import { setSelection } from "../../store/setSelection.ts";
 
 type TextObjectProps = {
     textObject: TextObjectType,
     scale?: number,
-    selection: SelectionType,
+    selection: boolean,
 }
 
 function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
@@ -27,6 +27,7 @@ function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
         fontSize: `${textObject.fontSize * scale}px`, 
         cursor: selection ? 'move' : 'default', 
         margin: 0,
+        border: selection ? '3px solid #0b57d0' : 'none',
     };
 
     const handleDoubleClick = () => { setIsEditing(true); };
@@ -38,18 +39,6 @@ function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
         localStorage.setItem(`text_${textObject.id}`, textValue);
     };
 
-    if (selection.selectedObjectId === textObject.id) {
-        textObjectStyles.border = '3px solid #0b57d0'; 
-    }
-
-    const onTextClick = () => {
-        dispatch(setSelection, {
-            selectedSlideId: selection.selectedSlideId,
-            selectedObjectId: selection.selectedObjectId,
-        })
-    }
-    
-
     return (
         <>
         {isEditing ? (
@@ -58,11 +47,10 @@ function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 autoFocus
-                onClick={onTextClick}
                 style={{...textObjectStyles, fontSize: `${textObject.fontSize * scale}px`,}}
                 />
         ) : (
-            <p onClick={onTextClick} onDoubleClick={handleDoubleClick} style={textObjectStyles}>
+            <p onDoubleClick={handleDoubleClick} style={textObjectStyles}>
                 {textValue}
             </p>
             )}

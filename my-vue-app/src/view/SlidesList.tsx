@@ -18,9 +18,27 @@ const SLIDE_PREVIEW_SCALE = 0.2;
 function SlidesList() {
 
     const editor = useAppSelector((editor => editor))
-    const slides = editor.presentation.slides
+    const slides = editor.presentation?.slides
     const selection = editor.selection
     const {setSelection} = useAppActions()
+
+    // if (!slides || slides.length === 0) {
+    //     // Выберите, что делать, если слайды отсутствуют
+    //     console.error("No slides available");
+    //     return (
+    //         <div className={styles.emptySlideList}>
+    //             <div className={styles.emptyMessage}>
+    //                 <h2>Добавьте слайд</h2>
+    //             </div>
+    //         </div>
+    //     );
+    // }
+    
+    // const selectedSlide = slides.find(slide => slide.id === selection?.selectedSlideId);
+    // if (!selectedSlide) {
+    //     console.error("Selected slide not found");
+    //     return; // или используйте значение по умолчанию
+    // }
 
     const {
         draggingSlide,
@@ -38,7 +56,7 @@ function SlidesList() {
         })
     }
 
-    if (slides.length === 0) {
+    if (slides?.length === 0) {
         return (
             <div className={styles.emptySlideList}>
                 <div className={styles.emptyMessage}>
@@ -47,9 +65,10 @@ function SlidesList() {
             </div>
         );
     }
+    
     return (
         <div className={styles.slideList}>
-            {slides.map((slide) =>
+            {slides?.map((slide) =>
                 <div
                     key={slide.id}
                     draggable
@@ -63,9 +82,8 @@ function SlidesList() {
                     <CurrentSlide
                         slide={slide}
                         scale={SLIDE_PREVIEW_SCALE}
-                        selection={selection}
-                        className={styles.item}
-                        selectedObjId={""}
+                        className={`${styles.item} ${slide.id === selection.selectedSlideId ?  styles.selectedSlide : ''}`}
+                        showResizeHandles={false}
                     ></CurrentSlide>
                 </div>
             )}

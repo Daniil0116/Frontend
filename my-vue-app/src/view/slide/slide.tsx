@@ -9,6 +9,7 @@ import { useDragAndDrop } from "../../hooks/useDragAndDropForObject.ts";
 import { useResizeObject } from "../../hooks/useResizeObjects";
 import { useAppSelector } from "../../hooks/useAppSelector.ts";
 import { SelectionType } from "../../store/EditorType.ts";
+import { useAppActions } from "../../hooks/useAppActions.ts";
 
 
 const SLIDE_WIDTH = 935;
@@ -19,30 +20,40 @@ type SlideProps = {
     scale?: number,
     selection?: SelectionType,
     className: string,
-    selectedObjId: string | null
-    showResizeHandles?: boolean;
+    showResizeHandles?: boolean,
+    showSelectedObject?: boolean,
 }
 
-function CurrentSlide({ slide, scale = 1, className, selectedObjId, showResizeHandles = true }: SlideProps) {
+function CurrentSlide({ slide, scale = 1, className, showResizeHandles = true }: SlideProps) {
     const selection = useAppSelector((editor => editor.selection))
+    const { setSelection } = useAppActions();
     const { handleobjectMD, handleobjectMM, handleobjectMU } = useDragAndDrop({ slideId: slide?.id ?? '' });
     const { isResizing, handleResizeMD, handleResizeMM, handleResizeMU } = useResizeObject({ slideId: slide?.id ?? '' });
+    
 
-    function onObjClick(objectId: string): void {
-        dispatch(setSelection, {
-            selectedSlideId: slide?.id,
-            selectedObjectId: objectId,
-        });
-    }
+    // function onObjClick(objectId: string): void {
+    //     dispatch(setSelection, {
+    //         selectedSlideId: slide?.id,
+    //         selectedObjectId: objectId,
+    //     });
+    // }
 
-    const handleSlideClick = () => {
-        if (selectedObjId) {
-            dispatch(setSelection, {
-                selectedSlideId: slide?.id,
-                selectedObjectId: null,
+    const handleSlideClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        const target = event.target as HTMLElement;
+        const elementId = target.getAttribute('data-element-id');
+        const slideId = slide?.id ?? "";
+        if (elementId) {
+            setSelection({
+                selectedSlideId: slideId, selectedObjectId: elementId,
+                elementId: ""
+            });
+        } else {
+            setSelection({
+                selectedSlideId: slideId, selectedObjectId: null,
+                elementId: ""
             });
         }
-    };
+    }
 
     if (slide == null) {
         return (<></>);
@@ -56,11 +67,6 @@ function CurrentSlide({ slide, scale = 1, className, selectedObjId, showResizeHa
         width: `${SLIDE_WIDTH * scale}px`,
         height: `${SLIDE_HEIGHT * scale}px`,
     }
-
-    if (selection?.selectedObjectId === slide.id) {
-        slideStyles.border = '3px solid #0b57d0'
-    }
-    
 
     return (
         <div style={slideStyles} className={`${styles.slide} ${className}`}
@@ -78,15 +84,18 @@ function CurrentSlide({ slide, scale = 1, className, selectedObjId, showResizeHa
             onMouseLeave={handleResizeMU}
             onClick={handleSlideClick}>
             {slide.objects.map(SlideObject => {
-                const isSelectionObj = SlideObject.id === selectedObjId;
+                const isSelectionObj = SlideObject.id === selection?.selectedObjectId;
                 return (<div key={SlideObject.id}
-                    onClick={(e) => { e.stopPropagation(); onObjClick(SlideObject.id); }}
+                    onClick={(e) => { e.stopPropagation(); setSelection({
+                        selectedSlideId: slide.id, selectedObjectId: SlideObject.id,
+                        elementId: ""
+                    }); }}
                     onMouseDown={(event) => handleobjectMD(event, SlideObject.id)}
                     style={{ position: 'relative' }}>
                     {SlideObject.type === "text" ? (
-                        <TextObject textObject={SlideObject} scale={scale} selection={selection} />
+                        <TextObject textObject={SlideObject} scale={scale} selection={isSelectionObj} />
                     ) : (
-                        <ImageObject imageObject={SlideObject} scale={scale} selection={selection} />
+                        <ImageObject imageObject={SlideObject} scale={scale} selection={isSelectionObj} />
                     )}
                     {isSelectionObj && showResizeHandles && (
                         <>

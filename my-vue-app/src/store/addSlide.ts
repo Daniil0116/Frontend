@@ -1,10 +1,10 @@
 import { EditorType } from "./EditorType";
 import { SlideType } from "./PresentationType";
-//import { randomString } from "./randomID";
+import { randomString } from "./randomID";
 import { createNewSlide } from "./redux/createNewSlide";
 
 function addSlide(editor: EditorType): EditorType {
-    //const randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    // const randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     // const newSlide: SlideType = {
     //     id: randId,
     //     objects: [],
@@ -13,7 +13,7 @@ function addSlide(editor: EditorType): EditorType {
     const selection = editor.selection
     const newSlide = createNewSlide()
 
-    //const selectedSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selection.selectedSlideId);
+    const selectedSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selection?.selectedSlideId);
     const slides: SlideType[] = []
     if (selection) {
         for (const slide of editor.presentation.slides) {
@@ -29,7 +29,11 @@ function addSlide(editor: EditorType): EditorType {
     return {
         presentation: {
             ...editor.presentation,
-            slides: slides,
+            slides: [
+                ...editor.presentation.slides.slice(0, selectedSlideIndex + 1),
+                newSlide,
+                ...editor.presentation.slides.slice(selectedSlideIndex + 1)
+            ]
         },
         selection: {
             selectedSlideId: newSlide.id,
@@ -37,20 +41,20 @@ function addSlide(editor: EditorType): EditorType {
             selectedObjectId: null
         }
     }
+
+
+
+    // return {
+    //     presentation: {
+    //         ...editor.presentation,
+    //         slides: [
+    //             ...editor.presentation.slides.slice(0, selectedSlideIndex + 1),
+    //             newSlide,
+    //             ...editor.presentation.slides.slice(selectedSlideIndex + 1)
+    //         ]
+    //     },
+    //     selection: editor.selection
+    // };
 }
-
-
-//     return {
-//         presentation: {
-//             ...editor.presentation,
-//             slides: [
-//                 ...editor.presentation.slides.slice(0, selectedSlideIndex + 1),
-//                 newSlide,
-//                 ...editor.presentation.slides.slice(selectedSlideIndex + 1)
-//             ]
-//         },
-//         selection: editor.selection
-//     };
-// }
 
 export { addSlide };

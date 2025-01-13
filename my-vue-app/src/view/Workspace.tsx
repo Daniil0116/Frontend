@@ -23,7 +23,7 @@ function Workspace() {
     const slides = editor.presentation.slides
     const selection = editor.selection
     const selectedSlide: SlideType = slides.find(slide => slide.id === selection?.selectedSlideId) || slides[0]
-    const selectedObjId = editor.selection.selectedObjectId
+    //const selectedObjId = editor.selection.selectedObjectId
     //SelectionType = slides.find(object => object.id === selection?.selectedObjectId) || null;
 
     if (slides.length === 0) {
@@ -38,7 +38,7 @@ function Workspace() {
     //const slide = slides[selectedSlideIndex || 0];
     return (
         <div className={styles.workspace}>
-            <CurrentSlide slide={selectedSlide} className={""} selectedObjId={selectedObjId}></CurrentSlide>
+            <CurrentSlide slide={selectedSlide} className={""}></CurrentSlide>
         </div>
     )
 }

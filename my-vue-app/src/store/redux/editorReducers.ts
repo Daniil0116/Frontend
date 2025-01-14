@@ -4,9 +4,7 @@ import { setSelection } from "../setSelection";
 import { ActionType, EditorAction } from "./actions";
 import { defaultEditor } from "../data";
 import { removeSlide } from "../removeSlide";
-//import { UnknownAction } from "redux";
 import { addTextToSlide } from "../addTextToSlide";
-//import { TextObjectType } from "../PresentationType";
 import { changeColorBack } from "../changeColorBack";
 import { changeImgBack } from "../changeImgBack";
 import { removeObjectOnSlide } from "../removeObjectOnSlide";
@@ -63,7 +61,21 @@ function editorReducer(editor: EditorType = defaultEditor, action: EditorAction)
             return editor
         case ActionType.REDO_EDITOR:
             return editor
-
+        case ActionType.UPDATE_TEXT: 
+            return {
+                ...editor,
+                presentation: {
+                    ...editor.presentation,
+                    slides: editor.presentation.slides.map(slide => ({
+                        ...slide,
+                        objects: slide.objects.map(obj => 
+                            obj.id === action.payload.id 
+                            ? { ...obj, value: action.payload.value } 
+                            : obj
+                        ),
+                    })),
+                },
+            };
         default:
             return editor
     }

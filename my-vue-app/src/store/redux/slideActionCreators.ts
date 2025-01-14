@@ -110,6 +110,11 @@ function exportPresentation(editor:EditorType) {
 const importPresentationAction = (editor: EditorType): importEditorAction => ({
     type: ActionType.IMPORT_PRESENTATION,
     payload: editor,
+})
+
+const updateText = (id: string, value: string) => ({
+    type: ActionType.UPDATE_TEXT,
+    payload: { id, value },
 });
 
 
@@ -129,4 +134,5 @@ export {
     loadSlides,
     exportPresentation,
     importPresentationAction,
+    updateText,
 }

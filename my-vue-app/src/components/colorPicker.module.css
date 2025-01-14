@@ -1,7 +1,8 @@
-/* ColorPicker.module.css */
 .colorPickerContainer {
     display: flex;
     align-items: center;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .colorPicker__input[type="color"] {

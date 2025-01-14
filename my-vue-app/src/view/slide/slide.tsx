@@ -3,8 +3,6 @@ import { TextObject } from "./TextObject.tsx";
 import { ImageObject } from "./ImageObject.tsx";
 import styles from './Slide.module.css';
 import { CSSProperties } from "react";
-import { dispatch } from "../../store/editor.ts";
-import { setSelection } from "../../store/setSelection.ts";
 import { useDragAndDrop } from "../../hooks/useDragAndDropForObject.ts";
 import { useResizeObject } from "../../hooks/useResizeObjects";
 import { useAppSelector } from "../../hooks/useAppSelector.ts";
@@ -29,15 +27,6 @@ function CurrentSlide({ slide, scale = 1, className, showResizeHandles = true }:
     const { setSelection } = useAppActions();
     const { handleobjectMD, handleobjectMM, handleobjectMU } = useDragAndDrop({ slideId: slide?.id ?? '' });
     const { isResizing, handleResizeMD, handleResizeMM, handleResizeMU } = useResizeObject({ slideId: slide?.id ?? '' });
-    
-
-    // function onObjClick(objectId: string): void {
-    //     dispatch(setSelection, {
-    //         selectedSlideId: slide?.id,
-    //         selectedObjectId: objectId,
-    //     });
-    // }
-
     const handleSlideClick = (event: React.MouseEvent<HTMLDivElement>) => {
         const target = event.target as HTMLElement;
         const elementId = target.getAttribute('data-element-id');
@@ -60,8 +49,8 @@ function CurrentSlide({ slide, scale = 1, className, showResizeHandles = true }:
     }
 
     const slideStyles: CSSProperties = {
-        backgroundColor: slide.background.type === 'color' ? slide.background.color : 'transparent',
-        backgroundImage: slide.background.type === 'image' ? `url(${slide.background.src})` : 'none',
+        backgroundColor: slide.background?.type === 'color' ? slide.background.color : 'transparent' ,
+        backgroundImage: slide.background?.type === 'image' ? `url(${slide.background.src})` : 'none',
         backgroundSize: 'cover',
         position: 'relative',
         width: `${SLIDE_WIDTH * scale}px`,

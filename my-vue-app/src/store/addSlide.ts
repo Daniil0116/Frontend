@@ -1,15 +1,8 @@
 import { EditorType } from "./EditorType";
 import { SlideType } from "./PresentationType";
-import { randomString } from "./randomID";
 import { createNewSlide } from "./redux/createNewSlide";
 
 function addSlide(editor: EditorType): EditorType {
-    // const randId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-    // const newSlide: SlideType = {
-    //     id: randId,
-    //     objects: [],
-    //     background: {type:"color", color:"white"},
-    // };
     const selection = editor.selection
     const newSlide = createNewSlide()
 

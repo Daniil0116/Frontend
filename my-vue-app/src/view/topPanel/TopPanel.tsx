@@ -21,6 +21,9 @@ import { HistoryContext } from '../../hooks/historyContenx'
 import React from 'react'
 import undo from "../../icons/undo.svg"
 import redo from "../../icons/redo.svg"
+import iconPDF from "../../icons/PDFIcon.svg"
+import { createPresentationPDF } from '../../store/createPresentationPDF'
+import PDFmodule from '../../components/PDFmodule'
 
 function TopPanel() {
 
@@ -28,14 +31,14 @@ function TopPanel() {
 
     const history = React.useContext(HistoryContext)
 
-    const {addSlide, removeSlide, setEditor, addTextToSlide, addImageToSlide, changeColorBack, changeImgBack, 
+    const { addSlide, removeSlide, setEditor, addTextToSlide, addImageToSlide, changeColorBack, changeImgBack,
         removeObjectOnSlide, renamePresentationTitle, exportPresentation,
     } = useAppActions()
 
 
     const [selectedColor, setSelectedColor] = useState("#000000");
     const [selectedImage, setSelectedImage] = useState("");
-    
+
 
     const onTitleChange: React.ChangeEventHandler = (event) => {
         renamePresentationTitle((event.target as HTMLInputElement).value)
@@ -54,7 +57,7 @@ function TopPanel() {
         if (file) {
             importPresentation(file)
                 .then((parsedContent: EditorType) => {
-                    dispatch(importPresentationAction(parsedContent)); 
+                    dispatch(importPresentationAction(parsedContent));
                 })
                 .catch((err) => {
                     console.error('Error importing presentation:', err);
@@ -62,7 +65,7 @@ function TopPanel() {
                 });
         }
     }, [dispatch]);
-    
+
     function onUndo() {
         const newEditor = history.undo()
         if (newEditor) {
@@ -94,17 +97,58 @@ function TopPanel() {
             window.removeEventListener('keydown', handleKeyDown);
         }
     }, []);
-    
+
+    const editor = useAppSelector((state) => state);
+    const slides = editor.presentation.slides;
+    const presentationTitle = editor.presentation.title;
+    const [pdfURL, setPdfURL] = useState<string | null>(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const handleGeneratePDF = async () => {
+        try {
+            const pdfBlob = await createPresentationPDF(slides);
+            const pdfURL = URL.createObjectURL(pdfBlob);
+            setPdfURL(pdfURL);
+            setModalOpen(true);
+        } catch (err) {
+            console.error('Error generate PDF: ', err);
+            if (slides.length === 0) {
+                alert("Добавьте слайды для создания PDF файла")
+            } else { alert("Ошибка в создании PDF файла") }
+        }
+    };
+    const handleDownloadPDF = () => {
+        if (pdfURL) {
+            const link = document.createElement("a");
+            link.href = pdfURL;
+            link.download = presentationTitle + ".pdf";
+            link.click();
+        }
+    }
+    const handleClosePreview = () => {
+        setModalOpen(false);
+        setPdfURL(null);
+    }
+
+    const handleAddImageToSlide = () => {
+        addImageToSlide();
+        setSelectedImage("");
+    };
+
+    const handleChangeImgBack = () => {
+        changeImgBack();
+        setSelectedImage(""); 
+    };
 
     return (
         <div className={styles.topPanel}>
             <input className={styles.topPanel_input} type="text" value={title} onChange={onTitleChange} />
             <div className={styles.topPanel_buttons}>
+                <Button className={styles.button} text={''} onClick={handleGeneratePDF} image={iconPDF}></Button>
                 <Button className={styles.button} text={'Добавить слайд'} onClick={addSlide} image={""}></Button>
                 <Button className={styles.button} text={'Удалить слайд'} onClick={removeSlide} image={""}></Button>
                 <Button className={styles.button} text={''} onClick={onUndo} image={undo}></Button>
                 <Button className={styles.button} text={''} onClick={onRedo} image={redo}></Button>
-                <Button className={styles.button} text={''} onClick={onExportPresentation} image={exportPres}></Button> 
+                <Button className={styles.button} text={''} onClick={onExportPresentation} image={exportPres}></Button>
                 <Button className={styles.button} text={''} onClick={() => document.getElementById('importFile')?.click()} image={importPres}></Button>
                 <input
                     type="file"
@@ -118,12 +162,17 @@ function TopPanel() {
                 <ColorPicker selectedColor={selectedColor} onChange={setSelectedColor} />
                 <Button className={styles.button} text={''} onClick={changeColorBack} image={changeColorIcon}></Button>
                 <ImageInput selectedImage={selectedImage} onChange={setSelectedImage} />
-                {selectedImage && ( <div>
-                <Button className={styles.button} text={''} onClick={addImageToSlide} image={addImg}></Button>
-                <Button className={styles.button} text={''} onClick={changeImgBack} image={changeImgIcon}></Button>
+                {selectedImage && (<div>
+                    <Button className={styles.button} text={''} onClick={handleAddImageToSlide} image={addImg}></Button>
+                    <Button className={styles.button} text={''} onClick={handleChangeImgBack} image={changeImgIcon}></Button>
                 </div>
                 )}
-                
+                <PDFmodule
+                    isModalOpen={isModalOpen}
+                    pdfURL={pdfURL}
+                    handleDownloadPDF={handleDownloadPDF}
+                    handleClosePreview={handleClosePreview}
+                />
             </div>
         </div>
     )

@@ -36,6 +36,7 @@ function addImageToSlide(editor: EditorType): EditorType {
             selectedObjectId: imageObject.id,
             elementId: ""
         },
+
     };
 }
 

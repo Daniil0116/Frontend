@@ -13,7 +13,7 @@ function addTextToSlide(editor: EditorType): EditorType {
         height: 140,
         type: 'text',
         value: "",
-        fontFamily: "Arial",
+        fontFamily: "NotoSans",
         fontSize: 24,
         fontColor: "black",
         text:''
@@ -33,7 +33,6 @@ function addTextToSlide(editor: EditorType): EditorType {
         }
         return slide;
     });
-    console.log('новый текст')
 
     return {
         ...editor,

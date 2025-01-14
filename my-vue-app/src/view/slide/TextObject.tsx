@@ -1,8 +1,7 @@
-//import { dispatch } from "../../store/editor.ts";
-//import { SelectionType } from "../../store/EditorType.ts";
+import { useDispatch } from "react-redux";
 import { TextObjectType } from "../../store/PresentationType.ts";
-import { CSSProperties, useState } from "react";
-//import { setSelection } from "../../store/setSelection.ts";
+import { CSSProperties, useEffect, useState } from "react";
+import { updateText } from "../../store/redux/slideActionCreators.ts";
 
 type TextObjectProps = {
     textObject: TextObjectType,
@@ -13,10 +12,7 @@ type TextObjectProps = {
 function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
 
     const [isEditing, setIsEditing] = useState(false);
-    const [textValue, setTextValue] = useState(() => {
-        const storedText = localStorage.getItem(`text_${textObject.id}`);
-        return storedText ? storedText : textObject.value; 
-    });
+    const [textValue, setTextValue] = useState(textObject.value);
     
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
@@ -31,13 +27,20 @@ function TextObject({ textObject, scale = 1, selection }: TextObjectProps) {
     };
 
     const handleDoubleClick = () => { setIsEditing(true); };
-    
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { setTextValue(e.target.value); };
+    const dispatch = useDispatch()
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        setTextValue(newValue); 
+        dispatch(updateText(textObject.id, newValue));
+    };
     
     const handleBlur = () => { 
         setIsEditing(false); 
-        localStorage.setItem(`text_${textObject.id}`, textValue);
     };
+
+    useEffect(() => {
+        setTextValue(textObject.value);
+    }, [textObject.value]);
 
     return (
         <>

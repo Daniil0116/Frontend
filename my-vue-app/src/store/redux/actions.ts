@@ -24,6 +24,7 @@ enum ActionType {
     LOAD_SLIDES = 'loadSlides',
     UNDO_EDITOR = 'undoEditor',
     REDO_EDITOR = 'redoEditor',
+    UPDATE_TEXT = 'updateText',
 }
 
 type AddSlideAction = {
@@ -120,11 +121,20 @@ type redoEditorAction = {
     type: ActionType.REDO_EDITOR
 };
 
+type updateTextAction = {
+    type: ActionType.UPDATE_TEXT,
+    payload: {
+        id: string,
+        value: string,
+    }
+}
+
 type EditorAction = AddSlideAction | RemoveSlideAction | SetSelectionAction | SetEditorAction
     | addTextToSlideAction | addImageToSlideAction | changeColorBackAction | changeImgBackAction
     | removeObjectOnSlideAction | renamePresentationTitleAction | moveObjectOnSlideAction
     | resizeSlideObjectAction | moveSlideAction | saveSlidesAction | loadSlidesAction
     | importEditorAction | exportPresentationAction | undoEditorAction | redoEditorAction
+    | updateTextAction
 
 export {
     ActionType,

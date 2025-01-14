@@ -1,0 +1,33 @@
+.module {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; 
+}
+.moduleBorder {
+    background-color: black;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 900px; 
+    padding: 40px;
+}
+.buttonBlock {
+    margin-top: 20px;
+}
+.buttonDownload {
+    margin-left: 20px;
+}
+
+.buttonReturn {
+    margin-right: 20px;
+}
+
+button:hover {
+    background-color: rgb(198, 198, 198);
+}

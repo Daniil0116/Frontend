@@ -83,10 +83,10 @@ function TopPanel() {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.metaKey || event.ctrlKey) {
-                if (event.key === 'z' || event.key === 'Z' || event.key === 'Я' || event.key === 'я') {
+                if (event.key === 'z' || event.key === 'я') {
                     event.preventDefault();
                     onUndo();
-                } else if (event.key === 'y' || event.key === 'Y' || event.key === 'Н' || event.key === 'н') {
+                } else if (event.key === 'y' || event.key === 'н') {
                     event.preventDefault();
                     onRedo();
                 }

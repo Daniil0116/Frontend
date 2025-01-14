@@ -1,5 +1,4 @@
 import { EditorType, SelectionType } from "../EditorType"
-//import { TextObjectType } from "../PresentationType"
 
 enum ActionType {
     ADD_SLIDE = 'addSlide',

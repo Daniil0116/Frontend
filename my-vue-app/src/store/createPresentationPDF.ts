@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import "../assets/NotoSans.ts";
 import { SlideType, SlideObject } from "./PresentationType.ts";
 import NotoSans from "../assets/NotoSans.ts";
+import { SLIDE_HEIGHT, SLIDE_WIDTH } from "../view/slide/slide.tsx";
 
 function insertTextIntoPDF(pdf: jsPDF, object: SlideObject) {
     if (object.type === "text") {
@@ -26,7 +27,7 @@ function insertImageIntoPDF(pdf: jsPDF, object: SlideObject) {
 }
 
 const createPresentationPDF = async (slides: SlideType[]): Promise<Blob> => {
-    const pdf = new jsPDF("landscape", "px", [935, 525]);
+    const pdf = new jsPDF("landscape", "px", [SLIDE_WIDTH, SLIDE_HEIGHT]);
     pdf.addFileToVFS("NotoSans.ttf", NotoSans);
     pdf.addFont("NotoSans.ttf", "NotoSans", "normal");
     pdf.setFont("NotoSans");

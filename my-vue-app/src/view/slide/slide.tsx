@@ -129,4 +129,4 @@ function CurrentSlide({ slide, scale = 1, className, showResizeHandles = true }:
     );
 }
 
-export { CurrentSlide };
+export { CurrentSlide, SLIDE_WIDTH, SLIDE_HEIGHT };
